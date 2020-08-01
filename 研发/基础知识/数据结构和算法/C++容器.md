@@ -13,7 +13,7 @@
 
 **标准库顺序容器**
 
-* vector，	可变大小数组。可随机访问。在**除尾部外**插入删除元素慢
+* vector，   可变大小数组。可随机访问。在**除尾部外**插入删除元素慢
 * deque，    双向队列。可随机访问。在头尾插入删除快。
 * list，          双向链表。只支持双向顺序访问。任何位置插入删除速度都快。
 * forward_list单向链表。只支持单向顺序访问。任何位置插入删除都快。
@@ -34,8 +34,8 @@ deque的随机读取实现方法为通过分段的连续内存加map实现。其
 * 中间插入list,forward_list
 * 头尾插中间不插，deque
 * 读取时中间插，访问时随机访问
-	* 确定是否真的有中插需要。例如vector的sort函数可以进行重排的操作
-	* 必须中插可考虑，输入阶段list。完成输入将list拷贝到vector
+    * 确定是否真的有中插需要。例如vector的sort函数可以进行重排的操作sort(v.begin(),v.end(),优先级)。默认是升序。
+    * 必须中插可考虑，输入阶段list。完成输入将list拷贝到vector
 
 几乎最全能的容器，deque。一般而言，vector和list足以使用了。
 
@@ -57,7 +57,7 @@ deque的随机读取实现方法为通过分段的连续内存加map实现。其
 
 迭代器是最主要使用的容器中的类型。支持以下操作
 
-* *iter	使用解引用符返回迭代器iter所指向元素的**引用**
+* *iter 使用解引用符返回迭代器iter所指向元素的**引用**
 * iter->member 解引用iter并获得该元素名为men的成员的引用
 * ++iter    iter指向容器中下一个元素
 * --iter      iter指向容器中上一个元素
@@ -95,19 +95,19 @@ list<string>::const_iterator it5 = c.begin();//显式指定数据类型
 3. 构造函数初始化，()最后两种
 
 ```C++
-C c;				//默认构造函数，如果C是array则c中元素按照默认方式初始化，否则c为空。
+C c;                //默认构造函数，如果C是array则c中元素按照默认方式初始化，否则c为空。
 
-C c1(c2);			//c1初始化为c2的拷贝。c1、c2必须是相同容器类型，且保存相同元素类型(对于array而
-C c1 = c2;			//言，还要有相同大小)
+C c1(c2);           //c1初始化为c2的拷贝。c1、c2必须是相同容器类型，且保存相同元素类型(对于array而
+C c1 = c2;          //言，还要有相同大小)
 
-C c{a,b,c..};		//c初始化为初始化列表中元素的拷贝。列表元素类型必须和c保存元素类型相同。
-C C = {a,b,c};		//对于array而言，列表元素数目必须小于等于array大小，遗漏的元素将进行值初始化。
+C c{a,b,c..};       //c初始化为初始化列表中元素的拷贝。列表元素类型必须和c保存元素类型相同。
+C C = {a,b,c};      //对于array而言，列表元素数目必须小于等于array大小，遗漏的元素将进行值初始化。
 
-C c(b,e);			//c初始化为得带器be指定范围中的元素的拷贝。array不适用
+C c(b,e);           //c初始化为得带器be指定范围中的元素的拷贝。array不适用
 
 只有顺序容器(除array)，构造函数可以接受大小参数
-C seq(n);	//容器seq包含n个元素，对这些元素进行了值初始化。这个构造函数是explicit的;(string不适用)
-C seq(n,t);	//包含n个初始化值为t的元素
+C seq(n);   //容器seq包含n个元素，对这些元素进行了值初始化。这个构造函数是explicit的;(string不适用)
+C seq(n,t); //包含n个初始化值为t的元素
 
 ```
 
@@ -122,7 +122,7 @@ array<int,10>::size_type i; //正确
 array<int>::size_type j;    //错误
 
 int digs[10] = {1,2,3,4,5,6,7,8,9,10};
-int cpy[10] = digs;						//错误，内置数组不支持拷贝
+int cpy[10] = digs;                     //错误，内置数组不支持拷贝
 array数组支持拷贝初始化。
 ```
 
@@ -131,16 +131,16 @@ array数组支持拷贝初始化。
 赋值运算将左边容器中的元素替换成邮编容器中元素的拷贝。
 
 ```C++
-c1 = c2     						//c1,c2必须具有相同类型
+c1 = c2                             //c1,c2必须具有相同类型
 c = {a,b,c,....}                    //c1替换成初始列表的拷贝，**array不适用**
-swap(c1,c2)							//交换c1和c2的元素，c1，c2必须有相同的类型，
-c1.swap(c2)							//swap一般比从c2向c1拷贝要快
+swap(c1,c2)                         //交换c1和c2的元素，c1，c2必须有相同的类型，
+c1.swap(c2)                         //swap一般比从c2向c1拷贝要快
 
 assign操作不适用于关联容器和array
-seq.assign(b,e)						//将seq中的元素替换迭代器b和e所表示的范围中的元素。
-    								//迭代器b和e不能指向seq中的元素
-seq.assign(ilst)						//将seq中的元素替换为初始化列表ilst中元素
-seq,assign(n,t)						//将seq替换为n个值为t的元素
+seq.assign(b,e)                     //将seq中的元素替换迭代器b和e所表示的范围中的元素。
+                                    //迭代器b和e不能指向seq中的元素
+seq.assign(ilst)                        //将seq中的元素替换为初始化列表ilst中元素
+seq,assign(n,t)                     //将seq替换为n个值为t的元素
 ```
 
 
@@ -150,7 +150,7 @@ assgin的意义在于**语序从一个不同但相容的类型往原容器赋值
 ```C++
 list<string> name;
 vector<const char*> oldstyle;
-names = oldstyle;				//错误类型不匹配！
+names = oldstyle;               //错误类型不匹配！
 names.assign(oldstyle.cbegin(),oldstyle.cend()); //可以将const char*转化为string
 ```
 
@@ -180,29 +180,29 @@ swap操作交换两个类型相同的容器。**注意，元素本身未被交�
 
 * 向vector,string,deque插入元素会使所有指向容器的迭代器引用和指针失效。(该过程会重新申请分配内存空间。故失效)
 * 使用过程中应按照不同策略分配元素空间，策略将直接影响性能。
-	* 在vector，string尾部外任何位置，deque首尾外任何位置添加元素。都需要移动元素。
-	* 像一个vector或者string添加元素可能引擎整个对象存储空间的重新分配。
+    * 在vector，string尾部外任何位置，deque首尾外任何位置添加元素。都需要移动元素。
+    * 像一个vector或者string添加元素可能引擎整个对象存储空间的重新分配。
 * array不支持下列操作，因为会改变大小
 * forward_list有专门版insert和emplace
 * forward_list不支持push_back和emplace_back
 * vector,string不支持push_front,emplace_front
 
 ```C++
-c.push_back(t);				//在c的尾部创建一个值为t或者由args创建的元素
-c.emplace_back(args);		//返回void
+c.push_back(t);             //在c的尾部创建一个值为t或者由args创建的元素
+c.emplace_back(args);       //返回void
 
-c.push_front(t);			//在c的头部创建元素
-c,emplace_front(args);		//返回void
+c.push_front(t);            //在c的头部创建元素
+c,emplace_front(args);      //返回void
 
-c.insert(p,t);				//在迭代器p指向的元素！！之前！！创建一个值为t或者由args创建的元素
-c.emplace(p,args);			//返回指向新添加元素的迭代器
+c.insert(p,t);              //在迭代器p指向的元素！！之前！！创建一个值为t或者由args创建的元素
+c.emplace(p,args);          //返回指向新添加元素的迭代器
 
-c.insert(p,n,t);			//在迭代器p之前插入n个值为t的元素
-							//返回指向第一个新添加元素的迭代器，n为0返回p
-c.insert(p,b,e);			//在迭代器p之前插入迭代器b和e指定的范围内的元素(左闭右开)。b和e不能指向c
-							//返回指向新添加的第一个元素，若范围为空返回p
-c.insert(p,ilst);				//!! ilst是一个花括号包围的元素列表!! 将这些值插入到迭代器p之前。
-							//返回插得第一个元素，若为空返回p
+c.insert(p,n,t);            //在迭代器p之前插入n个值为t的元素
+                            //返回指向第一个新添加元素的迭代器，n为0返回p
+c.insert(p,b,e);            //在迭代器p之前插入迭代器b和e指定的范围内的元素(左闭右开)。b和e不能指向c
+                            //返回指向新添加的第一个元素，若范围为空返回p
+c.insert(p,ilst);               //!! ilst是一个花括号包围的元素列表!! 将这些值插入到迭代器p之前。
+                            //返回插得第一个元素，若为空返回p
 ```
 
 **push和emplace的区别**
@@ -221,12 +221,15 @@ push接受的是容器的储存元素的数据类型是一个对象。emplace接
 
 * at和下标操作只适用于string,vector,string,deque,array
 * back不适用于forwark_list
+* 顺序容器没有find操作，如需使用需要用全局find
+* 队列是尾进头出，即front是最早入队的，back是最后入队的。
+
 
 ```C++
-c.back();			//返回c尾元素的引用，若c为空函数行为未定义    
-c.front();			//返回c首元素的引用，若空未定义
-c[n];				//返回下标为n的元素的引用，n是一个无符号整型，若n>=c.size()，行为未定义
-c.at(n);    		//返回下标为n的元素的引用，若下标越界抛出out_of_range异常
+c.back();           //返回c尾元素的引用，若c为空函数行为未定义    
+c.front();          //返回c首元素的引用，若空未定义
+c[n];               //返回下标为n的元素的引用，n是一个无符号整型，若n>=c.size()，行为未定义
+c.at(n);            //返回下标为n的元素的引用，若下标越界抛出out_of_range异常
 ```
 
 **back()front()和begin()end()的区别**
@@ -243,13 +246,13 @@ begin和end返回的是迭代器，需要解引用符号才可以获取元素值
 * vector和front不支持pop_front
 
 ```C++
-c.pop_back();			//删除c的尾元素。返回void。若c为空函数未定义
-c.pop_front();			//删除c的首元素。返回void。若空未定义
-c.erase(p);				//删除迭代器p所指向元素，返回指向被删元素之后的迭代器。
-						//若p是尾元素，返回尾后元素。	若p是尾后，未定义
-c.erase(b,e);			//删除迭代器b和e所指定范围捏的元素，返回一个指向最后一个被删除元素之后的迭代器
-						//若e是尾后迭代器，也返回尾后迭代器.(计数范围使用左闭右开原则)
-c.clear();				//删除c所有元素，返回void
+c.pop_back();           //删除c的尾元素。返回void。若c为空函数未定义
+c.pop_front();          //删除c的首元素。返回void。若空未定义
+c.erase(p);             //删除迭代器p所指向元素，返回指向被删元素之后的迭代器。
+                        //若p是尾元素，返回尾后元素。    若p是尾后，未定义
+c.erase(b,e);           //删除迭代器b和e所指定范围捏的元素，返回一个指向最后一个被删除元素之后的迭代器
+                        //若e是尾后迭代器，也返回尾后迭代器.(计数范围使用左闭右开原则)
+c.clear();              //删除c所有元素，返回void
 ```
 
 **注意**erase(b,e)依旧是左闭右开原则，e应当指向希望删除的最后一个元素之后的位置，以下两者是等效操作，
@@ -263,23 +266,23 @@ c.clear();				//删除c所有元素，返回void
 单链表容器forward_list有着特殊的添加删除操作。因为单链表的数据结构从插入行为而言需要访问前驱，但是单链表的结构导致迭代器无法知道其前驱节点。故未定义类似其他顺序容器的添加删除函数，定义了insert_afer,rmplace_after,erase_after的函数，插入删除操作也是针对给定迭代器的下一个元素元素进行。类似尾后元素定义了before_begin函数取得首前迭代器，类似哑头结点。
 
 ```C++
-lst.before_begin()				//返回指向链表首元素钱不存在的元素的迭代器，此迭代器不能解引用
-lst.cbefore_begin()				//c前缀返回一个const_iterator
+lst.before_begin()              //返回指向链表首元素钱不存在的元素的迭代器，此迭代器不能解引用
+lst.cbefore_begin()             //c前缀返回一个const_iterator
     
-lst.insert_after(p,t)			//在迭代器p后插入元素，t是一个元素对象
-lst.insert_after(p,n,t)			//n代表数量
-lst.insert_after(p,b,e)			//b和e代表范围内的一对迭代器，不能指向lst。范围为空返回p
-lst.inster_after(p,ilst)			//ilst是一个花括号列表
-    							//返回值指向最后一个插入元素的迭代器
-    							//若p为尾后迭代器，则行为未定义。
+lst.insert_after(p,t)           //在迭代器p后插入元素，t是一个元素对象
+lst.insert_after(p,n,t)         //n代表数量
+lst.insert_after(p,b,e)         //b和e代表范围内的一对迭代器，不能指向lst。范围为空返回p
+lst.inster_after(p,ilst)            //ilst是一个花括号列表
+                                //返回值指向最后一个插入元素的迭代器
+                                //若p为尾后迭代器，则行为未定义。
     
-emplace_after(p,args)			//使用args在迭代器p后传建一个元素，返回一个指向这个元素的指针
-								//若p为尾后，行为未定义
+emplace_after(p,args)           //使用args在迭代器p后传建一个元素，返回一个指向这个元素的指针
+                                //若p为尾后，行为未定义
     
-lst.erase_after(p)				//删除迭代器!!p之后!!的位置指向的元素
-lst.erase_after(b,e)			//删除从b到e之间的元素(左闭右开不包括e)
-    							//返回指向最后一个被删除元素之后的迭代器
-    							//    若不存在这样的元素返回尾后迭代器，p为尾后行为未定义
+lst.erase_after(p)              //删除迭代器!!p之后!!的位置指向的元素
+lst.erase_after(b,e)            //删除从b到e之间的元素(左闭右开不包括e)
+                                //返回指向最后一个被删除元素之后的迭代器
+                                //    若不存在这样的元素返回尾后迭代器，p为尾后行为未定义
 ```
 
 #### 改变容器大小
@@ -287,8 +290,8 @@ lst.erase_after(b,e)			//删除从b到e之间的元素(左闭右开不包括e)
 可以使用resize增大或缩小容器，array不支持resize。若当前大小>新大小，容器后部元素被删除。若当前大小<新大小，会将新元素添加到容器后部。
 
 ```C++
-c.resize(n)				//调整c的大小为n。若c.size()>n，多出来的元素被删除。
-c.resize(n,t)			//若c.size()<n，变大，则对新元素进行值初始化，如果有对象t，则初始化为值t。
+c.resize(n)             //调整c的大小为n。若c.size()>n，多出来的元素被删除。
+c.resize(n,t)           //若c.size()<n，变大，则对新元素进行值初始化，如果有对象t，则初始化为值t。
 ```
 
 #### 容器操作导致迭代器失效
@@ -322,16 +325,22 @@ c.resize(n,t)			//若c.size()<n，变大，则对新元素进行值初始化，�
 
 * s.substr(pos,n)
 * s.insert(pos,args)
+    * 支持直接插入另一个字符串
 * s.erase(pos,len)
 * s.assign(args)
 * s.append(args)
 * s.replace(range,args)
-* s.find(args)/s.rfind(args)
-* s.find_first_to(args)/ s.find_last_of(args)
+* s.find(args)/s.rfind(args)   失败返回**string::npos**下同
+    * arg的形式，pos一般默认0，s.find_first_of等类似
+    * c,pos。从s中位置pos开始找c
+    * s2,pos。从s中pos位置开始找字符串s2
+    * cp,pos。从s中pos开始找以空字符结尾的C字符串。
+    * cp,pos,n。从s中pos开始找cp指向的数组的前n个字符串。pos,n无默认值
+* s.find_first_of(args)/ s.find_last_of(args)
 * s.find_firse_not_of(args)/ s.find_last_not_of(args)
 * s.compare(s2)
 * to_string(val)
-* stoi(s,p,b)	    其中p是size_t类型的指针，默认为0，运行后会指向s中第一个非数值字符的下标(注意起点从s开始算)默认为0。b是转换基数(进制)，默认为10。
+* stoi(s,p,b)       其中p是size_t类型的指针，默认为0，运行后会指向s中第一个非数值字符的下标(注意起点从s开始算)默认为0。b是转换基数(进制)，默认为10。
 * 字符串转C风格字符串。c_str(s)
 
 ## 顺序容器适配器
@@ -357,10 +366,10 @@ c.resize(n,t)			//若c.size()<n，变大，则对新元素进行值初始化，�
 
 ```C++
 //默认创建
-stack<int> stk(deq);	//从deq拷贝元素到stk
+stack<int> stk(deq);    //从deq拷贝元素到stk
 //指定创建
-stack<string, vector<string>> str_stk;			//指定了一个在vector上实现的空栈
-stack<string, vector<string>> str_stk2(svec);	//用svec去初始化str_stk2
+stack<string, vector<string>> str_stk;          //指定了一个在vector上实现的空栈
+stack<string, vector<string>> str_stk2(svec);   //用svec去初始化str_stk2
 ```
 
 **底层容器限定**
@@ -384,8 +393,8 @@ s.top()
 
 ```C++
 q.pop();
-q.front();		//最早入队元素
-q.back();		//仅适用队列，最晚入队元素
+q.front();      //最早入队元素
+q.back();       //仅适用队列，最晚入队元素
 q.push(item);
 q.emplace(args);
 ```
@@ -394,22 +403,32 @@ q.emplace(args);
 
 完整创建方式:
 
-其中参数2指定底层容器，默认vector。参数3指定优先级。新加入元素会排在所有优先级比他低的已有元素之前。标准库默认使用<运算符确定优先级。例如1<2，故1优先级高于2,2放在前面，所以默认是降序队列，可以使用重载指定优先级运算。
+其中参数2指定底层容器，默认vector。参数3指定优先级。默认情况排序顺序是less\<t\>内部图如下图。元素最大的会被放在队列前面。(一般丢列入队在队尾，出队在队头)
+
+也可这样理解 (入) 队尾  1 < 2 < 3 < 4    队头  (出)。 这串序列即按照优先级排列了，且新加入元素会排在优先级比他低的元素之前。从队头出队。**less大顶堆，great小顶堆**
+
+![image-20200719190147301](https://pic-bed-1256813635.cos.ap-nanjing.myqcloud.com/markdownImg/image-20200719190147301.png)
+
+优先级队列在内部是不会随时维护一个顺序数组的，所以不能使用[i]的下标形式读取，只能使用top形式
+
 
 ```C++
-//升序队列
-priority_queue <int,vector<int>,greater<int> > pq;
-//降序队列
-priority_queue <int,vector<int>,less<int> > pq;
+//升序队列  小顶堆
+priority_queue <int,vector<int>,greater<int> > pq;//升序
+//降序队列  大顶堆 默认
+priority_queue <int,vector<int>,less<int> > pq;//降序
+
+记忆**less对应降序**。注意与别的比较函数区分！
+
+实际上是保持优先级最高的元素在[0]的位置，每次pop或者push操作会更新
 ```
 
 
 
 ```C++
-q.pop();		//删除最高优先级元素
-q.front();		//首元素
-q.top();		//仅适用优先级队列，返回优先级最高的元素
-q.push(item);	//在恰当位置创建元素
+q.pop();        //删除最高优先级元素
+q.top();        //仅适用优先级队列，返回优先级最高的元素
+q.push(item);   //在恰当位置创建元素
 q.emplace(args);
 ```
 
@@ -500,8 +519,8 @@ map<string, int> salary = {{"john", 100},
 set<string> exclude = {"the","but","and","or"};
 //构造函数初始化
 vector<int> ivec = {1,1,2,2,3,3};
-set<int> iset(ivec.begin(),ivec.end());				//仅包含来自ivec不重复的元素，大小为3
-multiset<int> miset(ivec.begin(),ivec.end());		//包含所有元素即使重复，大小为6
+set<int> iset(ivec.begin(),ivec.end());             //仅包含来自ivec不重复的元素，大小为3
+multiset<int> miset(ivec.begin(),ivec.end());       //包含所有元素即使重复，大小为6
 ```
 
 列表初始化器的内容必须能转换为容器中的元素类型。初始化map时需要提供关键字-值对，使用花括号包围。
@@ -510,20 +529,20 @@ multiset<int> miset(ivec.begin(),ivec.end());		//包含所有元素即使重复�
 
 **对于有序容器**，关键字类型必须定义元素比较的方法。默认情况下，标准库使用关键字类型的<运算符比较关键字。可以自定义比较操作，但是必须定义**严格弱序**，类似于小于等于。
 
-对于自建类，需要重载<运算符或者显式指定比较运算符。如下例，提供了孤雁尖子类型和比较操作类型----这应该是函数指针。使用decltype获得函数指针类型，必须加上*支出要使用一个给定函数类型的指针。
+**对于自建类，需要重载<运算符或者显式指定比较运算符。(map必须重载运算符)**如下例，提供了自建类型和比较操作类型----这应该是函数指针。使用decltype获得函数指针类型，必须加上*支出要使用一个给定函数类型的指针。
 
 ```
 class Sales_data{
-	string no;
+    string no;
 public:
-	string getno();
+    string getno();
 }
 Sales_data::getno(){
-	return this.no;
+    return this.no;
 }
 //比较函数
 bool compareNO(const Sales_data &p1,const Sales_data &p2){
-	return p1.getno()<p2.getno();
+    return p1.getno()<p2.getno();
 }
 //定义有序集合
 multiset<Sales_data, decltype(compareNO)*> Salesstore(compareNO);
@@ -564,16 +583,29 @@ erase
 
 #### 访问
 
-map可用下标访问。**如果使用一个不在容器中的关键字作为下标，会添加一个具有此关键字的元素到map中**。下标和at操作只适用于非const的map和unorder_map。
+map可用下标访问。**如果使用一个不在容器中的关键字作为下标，会添加一个具有此关键字的元素到map中**。**自动添加并执行默认初始化只要访问就会发生，并且读取的值就是默认初始化的值。**
+
+```C++
+//例子
+map<int,int> m;
+m[1] = 2;
+if(m[2] == 0)//判断true，默认初始化就是0
+    m[2] = 3;
+cout<<m[5];//输出0
+```
+
+
+
+下标和at操作只适用于非const的map和unorder_map。
 
 为了防止不必要的添加可以使用find操作。
 
 其中
 
-* find(k)					  返回指向k的迭代器，若不存在返回.end()
+* find(k)                     返回指向k的迭代器，若不存在返回.end()
 * count(k)                   返回int
 
-* lower_bound(k)     不小于(可能是本身的第一个)	    无序容器不适用
+* lower_bound(k)     不小于(可能是本身的第一个)     无序容器不适用
 * upper_bound(k)     大于                                                无序容器不适用
 * equal_range(k)       返回一个迭代器pair，指示关键字等于k的元素范围(左闭右开)。若不存在两者均为c.end()或指向关键字可插入的位置。
 
@@ -587,24 +619,24 @@ map可用下标访问。**如果使用一个不在容器中的关键字作为下
 
 ```C++
 //桶接口
-c.bucket_count();			//正在使用的桶数目
-c.max_bucket_count();		//容器能容纳的最多的桶的数量
-c.bucket_size(n);			//第n个桶有多少元素
-c.bucket(k);				//关键字k的元素在哪个桶
+c.bucket_count();           //正在使用的桶数目
+c.max_bucket_count();       //容器能容纳的最多的桶的数量
+c.bucket_size(n);           //第n个桶有多少元素
+c.bucket(k);                //关键字k的元素在哪个桶
 //桶迭代
-local_iterator				//用来访问桶中元素的迭代器类型(equal_range()的返回值类型)
-const_local_iterator		//const版本
-c.begin(n),c.end(n)			//桶n的首元素迭代器和尾后迭代器
-c.cbegin(n),c.cend(n)		//const
+local_iterator              //用来访问桶中元素的迭代器类型(equal_range()的返回值类型)
+const_local_iterator        //const版本
+c.begin(n),c.end(n)         //桶n的首元素迭代器和尾后迭代器
+c.cbegin(n),c.cend(n)       //const
 //哈希策略
-h = c.hash_function();		//返回c的哈希函数
-eq = c.key_eq();			//eq是c的相等检测函数
-c.load_factor();			//装载因子。元素除以桶数，double(c.size())/c.bucket_count()每个桶平均元素数量，float
-c.max_load_factor();		//最大装载因子。c试图维护的平均桶大小，返回float。
+h = c.hash_function();      //返回c的哈希函数
+eq = c.key_eq();            //eq是c的相等检测函数
+c.load_factor();            //装载因子。元素除以桶数，double(c.size())/c.bucket_count()每个桶平均元素数量，float
+c.max_load_factor();        //最大装载因子。c试图维护的平均桶大小，返回float。
 //以下函数代价可能会触发重新hash所有元素，代价可能非常高，最坏情况O(N^2)
-c.max_load_factor(d);		//输入参数float d，将最大装载因子设定为d，若装载因子已接近最大，c将改变哈希表大小
-c.rehash(n);				//重组储存，使得bucket_count>=n且bucket_count>size/max_load_factor
-c.reserve(n);				//重组储存，使得c可以保存n个元素并且不用rehash.c.rehash(ceil(n/c.max_load_factor()))
+c.max_load_factor(d);       //输入参数float d，将最大装载因子设定为d，若装载因子已接近最大，c将改变哈希表大小
+c.rehash(n);                //重组储存，使得bucket_count>=n且bucket_count>size/max_load_factor
+c.reserve(n);               //重组储存，使得c可以保存n个元素并且不用rehash.c.rehash(ceil(n/c.max_load_factor()))
 ```
 
 无序关联容器装载因子定义为已用空间的比例，也是size()/capacity()。
@@ -636,6 +668,12 @@ c.reserve(n);				//重组储存，使得c可以保存n个元素并且不用rehas
 
 STL 提供了非常多的数据结构算法。这些算法在命名空间 std 的范围内定义，通过包含头文件 <algorithm> 来获得使用权。
  常见的部分算法如下：
+
+关于sort的用法:
+
+>     sort(v.begin(),v.end(),greater<int>());//降序
+>
+>     sort(v.begin(),v.end(),less<int>());//升序   默认！   小的在前  大的在后  
 
 - for_each()；
 - find()；

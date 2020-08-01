@@ -435,6 +435,7 @@ int partition(vector<int>&nums,int start , int end){
     }
     //此时baseVal归为到i
     swap(nums,i,end);
+    return i;
 }
 
 //工具函数
@@ -827,6 +828,22 @@ TreeNode* insertIntoBST(TreeNode* root, int val) {
         return root;
 }
 ```
+
+### 1530_好叶子节点
+
+当需要储存一定的节点信息时，可以使用map配合数组的数据结构。后续遍历思路。
+
+```C++
+unordered_map<TreeNode* , vector<int> >  stats;
+//本题中stats用于存放距离信息
+//stats[root][dist] 表示距离root这一节点，距离为dist的叶子节点的数目。
+```
+
+
+
+
+
+
 
 ### 延申内容
 
